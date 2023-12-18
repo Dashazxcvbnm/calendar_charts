@@ -1,0 +1,26 @@
+{
+  "name": "calendar_charts",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "apexcharts": "^3.45.0",
+    "normalize-scss": "^8.0.0",
+    "vue": "^3.3.11",
+    "vue-router": "^4.2.5",
+    "vue3-apexcharts": "^1.4.4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.5.2",
+    "naive-ui": "^2.36.0",
+    "node-sass": "^9.0.0",
+    "sass": "^1.69.5",
+    "sass-loader": "^13.3.2",
+    "vite": "^5.0.10"
+  }
+}
