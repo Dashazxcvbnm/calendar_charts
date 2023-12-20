@@ -28,6 +28,7 @@ const formatDate = (dateJson = responce) => {
                     days: [],
                     total: 0,
                 },
+                totalDays: 0,
             }
         };
 
@@ -35,16 +36,19 @@ const formatDate = (dateJson = responce) => {
             case HOLIDAY_DAY_TYPE: 
                 fullYear[currentMonthName].holidayDays.days.push(date);
                 fullYear[currentMonthName].holidayDays.total += 1;
+                fullYear[currentMonthName].totalDays += 1;
                 break
 
             case WORK_DAY_TYPE:
                 fullYear[currentMonthName].workDays.days.push(date);
                 fullYear[currentMonthName].workDays.total += 1;
+                fullYear[currentMonthName].totalDays += 1;
                 break
 
             case PRE_HOLIDAY_TYPE:
                 fullYear[currentMonthName].preHolidayDays.days.push(date);
                 fullYear[currentMonthName].preHolidayDays.total += 1;
+                fullYear[currentMonthName].totalDays += 1;
                 break
         }
      })
