@@ -2,30 +2,46 @@
     <div>
         <ChartLineComponent
             height="450"
-            :series="seriesData"
+            :series="seriesDataForLine"
             :xaxisCategories="monthArray"
             title="График производсвенного календаря 2024"
         />
+
+        <div class="chart-radial-bar__wrapper">
+            <ChartsRadialBarComponent
+                width="250"
+                v-for="(item, index) in formatedSeriesDataForRadialBar" :key="index"
+                :series="item.series"
+                :name="item.name"
+                :total="item.total"
+                :xaxisCategories="['Рабочие дни', 'Праздничные дни', 'Предпразднечные дни']"
+            />
+        </div>
     </div>
 </template>
 
 <script setup>
-import { onMounted, reactive } from "vue";
+import { onBeforeMount, reactive } from "vue";
 
-import ChartLineComponent from '@/components/ChartLineComponent.vue';
 import formatDate from '@/helpers/formatDate';
+import ChartLineComponent from '@/components/ChartLineComponent.vue';
+import ChartsRadialBarComponent from "@/components/ChartsRadialBarComponent.vue";
 
-onMounted(()=> {
+onBeforeMount(()=> {
     formatedDate = formatDate();
-    fillChartOptions(formatedDate);
+    fillChartOptionsForLine(formatedDate);
+    fillChartOptionsForRadialBar(formatedDate);
+    formatedSeriesDataForRadialBar = seriesDataForRadialBar;
 });
 
 let formatedDate = reactive({});
 
 const monthArray = [];
-const seriesData = [];
+const seriesDataForLine = [];
+const seriesDataForRadialBar = reactive([]);
+let formatedSeriesDataForRadialBar = reactive([]);
 
-const fillChartOptions = function(formatedDate) {
+const fillChartOptionsForLine = function(formatedDate) {
     const workDay = {
         name: "рабочие дни",
         type: 'line',
@@ -52,6 +68,36 @@ const fillChartOptions = function(formatedDate) {
         preHolidayDay.data.push(formatedDate[date].preHolidayDays.total);
     });
 
-    seriesData.push(workDay, holidayDay, preHolidayDay);
+    seriesDataForLine.push(workDay, holidayDay, preHolidayDay);
 };
+
+const fillChartOptionsForRadialBar = function() {
+    const test = {};
+
+    Object.keys(formatedDate).forEach((key)=> {
+        if (!test[key]) {
+            test[key] = {};
+        };
+
+        test[key].total = formatedDate[key].totalDays;
+        test[key].name = key;
+        test[key].series = [(formatedDate[key].workDays.total / formatedDate[key].totalDays) * 100, (formatedDate[key].holidayDays.total / formatedDate[key].totalDays) * 100, (formatedDate[key].preHolidayDays.total / formatedDate[key].totalDays) * 100];
+
+        seriesDataForRadialBar.push(test[key]);
+    })
+
+    return 
+};
+
 </script>
+
+<style lang="scss" scoped>
+.chart-radial-bar {
+    &__wrapper {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+</style>
