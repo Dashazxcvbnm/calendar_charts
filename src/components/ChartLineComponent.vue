@@ -61,7 +61,7 @@ let chartOptions = reactive({
     },
 
     xaxis: {
-        categories: props.xaxisCategories,
+        categories: props.xaxisCategories.map((data) => data.value),
         type: 'category',
         tickPlacement: 'between'
     },
